@@ -1,0 +1,32 @@
+name: Debian Test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: debian:stable
+
+    steps:
+      - name: Show basic environment
+        run: |
+          echo "Hello from inside Debian!"
+          uname -a
+          cat /etc/os-release
+
+      - name: Install build tools
+        run: |
+          apt-get update
+          apt-get install -y build-essential autoconf
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build
+        run: |
+          cd fixed
+          ./configure
+          make
+          ls -l ruby
